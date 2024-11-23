@@ -4,9 +4,9 @@ namespace BookShop.Controllers
 {
     public class HomeController: Controller
     {
-        public string Index()
+        public ViewResult Index()
         {
-            return "Home Page Message";
+            return View();
         }
     }
 }

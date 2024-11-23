@@ -1,0 +1,86 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RazorSyntax</title>
+</head>
+<body>
+    <h1> Razor Syntax</h1>
+    <h2>@DateTime.Now</h2>
+
+    @{
+        int a = 3;
+        int b = 7;
+        int c = a + b;
+        string message;
+    }
+    <h2>Sum of two variable = @c</h2>
+    @if (c < 10)
+    {
+        <h3>Sum is less than 10</h3>
+    }
+    else if (c > 10)
+    {
+        <h3> Sum is gretter than 10</h3>
+    }
+    else
+    {
+        <h2> Sum is=(@c)</h2>
+    }
+
+    <h1> Turnary Operator: @(a == 3 ? b = 5 : b = 7)</h1>
+
+
+    <h1> Turnary Operator: @(a < b ? message = "a is small" : message = "b is small")</h1>
+    <h2>@message</h2>
+
+    <h1>Switch Case:</h1>
+    @{
+        int value = 5;
+    }
+    @switch (value)
+    {
+        case 1:
+            <h2>Value is @value</h2>
+            break;
+        case 2:
+            <h2>Value is @value</h2>
+            break;
+        case 3:
+            <h2>Value is @value</h2>
+            break;
+        case 4:
+            <h2>Value is @value</h2>
+            break;
+        case 5:
+            <h2>Value is @value</h2>
+            break;
+        default:
+            <h2>Default Value is @value</h2>
+            break;
+    }
+
+    <h2>for loop</h2>
+    @for (int i = 0; i < 5; i++)
+    {
+        <h3>Value of i= @i</h3>
+    }
+    <h2>foreach</h2>
+    @{
+        List<int> numbers = new List<int>() { 10, 20, 30, 40, 50 };
+    }
+
+    @foreach (var item in numbers)
+    {
+        <h3>List's Value= @item</h3>
+    }
+
+</body>
+</html>
+

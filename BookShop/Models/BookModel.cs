@@ -10,5 +10,8 @@
         public string Category { get; set; }
         public int TotalPage { get; set; }
         public string Language { get; set; }
+        public string Description { get; set; }
+
+        
     }
 }

@@ -30,9 +30,10 @@ namespace BookShop.Controllers
         {
             return _bookRepository.SearchBook(bookName,authorName);
         }
-        public ViewResult AddNewBook(bool isSuccess=false)
+        public ViewResult AddNewBook(bool isSuccess=false,int bookId=0)
         {
             ViewBag.IsSuccess = isSuccess;
+            ViewBag.BookId = bookId;
             return View();
         }
         [HttpPost]
@@ -41,7 +42,7 @@ namespace BookShop.Controllers
             int id=_bookRepository.AddNewBook(bookModel);
             if (id >0)
             {
-                return RedirectToAction(nameof(AddNewBook), new {isSuccess=true});
+                return RedirectToAction(nameof(AddNewBook), new {isSuccess=true, bookId=id});
             }
 
             return View();

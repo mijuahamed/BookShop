@@ -11,7 +11,8 @@
         {
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>Add New Book Successfully!</strong>
-                Clik To View Details
+                <a asp-controller="Book" asp-action="GetBookDetailsById" asp-route-Id="@ViewBag.BookId" class="btn btn-sm btn-outline-secondary">View Details</a>
+                
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

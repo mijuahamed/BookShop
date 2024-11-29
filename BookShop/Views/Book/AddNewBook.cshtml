@@ -7,7 +7,8 @@
 <div class="container">
     <h1 class="display-4">Add New Book</h1>
     <form method="post" asp-action="AddNewBook" asp-controller="Book">
-        @if (ViewBag.IsSuccess)
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (ViewBag.IsSuccess==true)
         {
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>Add New Book Successfully!</strong>
@@ -18,55 +19,89 @@
                 </button>
             </div>
         }
-       
+
+
+        
+
+
+
+        @*<div class="form-group">
+            <label asp-for="Language"></label>
+            <select asp-for="Language" class="form-control" class="form-select" required>
+                <option value="">Please Choose Book Language </option>
+                <option value="Bangla">বাংলা</option>
+                <option value="English">English</option>
+                <option value="Arabic">عَرَبِيّ</option>
+                <option value="Chinese"> 普通话 </option>
+            </select>
+            <span asp-validation-for="Language" class="text-danger"></span>
+        </div>*@
+        @*<div class="form-group">
+            <label asp-for="Language"></label>
+            <select asp-for="Language"  asp-items="ViewBag.Language">
+                <option value="">Please Choose Book Language </option>
+                
+            </select>
+            <span asp-validation-for="Language" class="text-danger"></span>
+        </div>*@
+        <div class="form-group">
+            <label asp-for="LanguageId"></label>
+            <select asp-for="LanguageId" class="form-control" asp-items="ViewBag.Language">
+                <option value="">Please Choose Book Language </option>
+
+            </select>
+            <span asp-validation-for="LanguageId" class="text-danger"></span>
+        </div>
+        
+
         <div class="form-group">
             <label asp-for="Name"></label>
             <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="Title"></label>
             <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="Author"></label>
             <input asp-for="Author" class="form-control" />
+            <span asp-validation-for="Author" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="Price"></label>
             <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="Category"></label>
             <input asp-for="Category" class="form-control" />
+            <span asp-validation-for="Category" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="TotalPage"></label>
             <input asp-for="TotalPage" class="form-control" />
+            <span asp-validation-for="TotalPage" class="text-danger"></span>
         </div>
         
         <div class="form-group">
             <label asp-for="Description"></label>
             <textarea asp-for="Description" class="form-control">
+            <span asp-validation-for="Description" class="text-danger"></span>
 
             </textarea>
         </div>
 
         <div class="form-group">
-            <label asp-for="Language"></label>
-            <input asp-for="Language" class="form-control" />
-        </div>
-        
-        
-        
-        <div class="form-group">
-            <input type="submit" value="Add Book" class="btn btn-primary"/>
+            <input type="submit" value="AddBook" class="btn btn-primary"/>
         </div>
 
-
-        
     </form>
 
 </div>

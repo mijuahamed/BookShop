@@ -37,7 +37,10 @@ namespace BookShop
             services.AddDbContext<BookShopContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
             services.AddControllersWithViews();
 #if DEBUG
-            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddRazorPages().AddRazorRuntimeCompilation().AddViewOptions(options =>
+            {
+                options.HtmlHelperOptions.ClientValidationEnabled = true;
+            });
 #endif
             services.AddScoped<BookRepository, BookRepository>();
             services.AddScoped<LanguageRepository, LanguageRepository>();

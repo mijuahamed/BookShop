@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using BookShop.Helpers;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace BookShop.Models
 {
@@ -8,9 +10,13 @@ namespace BookShop.Models
     {
         public int Id { get; set; }
         [Required]
+        [StringLength(20, ErrorMessage = "The {0} must be {1} characters or less")]
         public string Name { get; set; }
         [StringLength(100,MinimumLength =5)]
+       // [MyCustomValidation("Title")]
+
         public string Title { get; set; }
+       // [MyCustomValidation("Author",ErrorMessage = "Your elegant error message goes here")]
         public string Author { get; set; }
         [Required(ErrorMessage = "Please enter a valid price")]
         public double? Price { get; set; }

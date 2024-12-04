@@ -1,7 +1,9 @@
 ﻿using BookShop.Data;
 using BookShop.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +20,7 @@ namespace BookShop.Repository
 
         public async Task<int>  AddNewBook(BookModel bookModel)
         {
-            var book = new Books()
+            var newbook = new Books()
             {
                 Author = bookModel.Author,
                 Name = bookModel.Name,
@@ -27,12 +29,24 @@ namespace BookShop.Repository
                 LanguageId = bookModel.LanguageId,
                 Price = bookModel.Price.HasValue? bookModel.Price.Value:0,
                 Title = bookModel.Title,
+                CoverImageUrl= bookModel.CoverImageUrl,
+                BookPdfUrl= bookModel.BookPdfUrl,
                 TotalPage = bookModel.TotalPage.HasValue? bookModel.TotalPage.Value : 0
 
             };
-           await _context.Books.AddAsync(book);
+            newbook.bookGallery=new List<BookGallery>();
+            foreach(var file in bookModel.Gallery)
+            {
+                BookGallery data = new BookGallery()
+                {
+                    Name = file.Name,
+                    URL = file.URL
+                };
+                newbook.bookGallery.Add(data);
+            }
+           await _context.Books.AddAsync(newbook);
            await _context.SaveChangesAsync();
-            return book.Id;
+            return newbook.Id;
         }
 
         public async Task<List<BookModel>> GetAllBooks()
@@ -49,7 +63,8 @@ namespace BookShop.Repository
                 Title = bookdata.Title,
                 TotalPage = bookdata.TotalPage,
                 Category = bookdata.Category,
-                LanguageName = bookdata.Language.Name
+                CoverImageUrl = bookdata.CoverImageUrl,
+                
             }).ToListAsync();
             return books;
         }
@@ -67,12 +82,56 @@ namespace BookShop.Repository
                 Title = bookdata.Title,
                 TotalPage = bookdata.TotalPage,
                 Category = bookdata.Category,
-                LanguageName = bookdata.Language.Name
+                LanguageName = bookdata.Language.Name,
+                CoverImageUrl= bookdata.CoverImageUrl,
+                Gallery=bookdata.bookGallery.Select(g => new GalleryModel()
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    URL = g.URL
+                }).ToList(),
+                BookPdfUrl= bookdata.BookPdfUrl,
             }).FirstOrDefaultAsync();
             return data;
            // var languageData=await _context.Language.FindAsync(bookdata.LanguageId);
+        }
+       public async Task<bool> DeleteBookById(int id)
+        {
+            var res=_context.Books.Where(x=>x.Id==id).FirstOrDefault();
+            if (res != null)
+            {
+                _context.Books.Remove(res);
+               await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+        public  bool UpdateBookById(int id,BookModel book)
+        {
             
-            
+            var old_book = _context.Books.FirstOrDefault(e => e.Id ==id);
+            var updatebook = new Books()
+            {
+
+                Name = book.Name,
+                Title = book.Title,
+                Author = book.Author,
+                Price=(int)book.Price,
+                TotalPage=(int)book.TotalPage,
+                Description = book.Description,
+                Category = old_book.Category,
+                CoverImageUrl= old_book.CoverImageUrl,
+                LanguageId=old_book.LanguageId,
+                Id=old_book.Id,
+                Language=old_book.Language,
+                BookPdfUrl= old_book.BookPdfUrl,
+                
+
+            };
+            _context.Entry(old_book).CurrentValues.SetValues(updatebook);
+            _context.SaveChanges();
+            return true;
+           
         }
 
         //public List<BookModel> SearchBook(string name, string author)

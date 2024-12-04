@@ -1,0 +1,21 @@
+﻿@model BookModel
+
+<div class="card mb-4 shadow-sm">
+    <img src="@(string.IsNullOrEmpty(Model.CoverImageUrl)?"/images/demo.png":Model.CoverImageUrl)"class="img-thumbnail" width="500" height="600">
+    <div class="card-body">
+        <h3 class="card-title"> @(string.IsNullOrEmpty(Model.Name) ? "Name is not avilavle" : Model.Name)</h3>
+        <p class="card-text">@(string.IsNullOrEmpty(Model.Description) ? "Description is not avilavle" : Model.Description) </p>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+
+                <a href="~/Book/DeleteBookById?id=@Model.Id" id="deleteBtn" class="btn bg-danger mr-1" onclick="return confirm('Are you sure you want to delete?');"><i class="fas fa-trash-alt text-white"></i>Delete Book</a>
+
+            </div>
+
+            <div class="btn-group">
+                <a asp-controller="Book" asp-action="GetBookDetailsById" asp-route-Id="@Model.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
+            </div>
+            <small class="text-muted">@(string.IsNullOrEmpty(Model.Author)?"N/A":Model.Author)</small>
+        </div>
+    </div>
+</div>

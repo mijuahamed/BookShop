@@ -5,30 +5,30 @@
 }
 
 <div class="container">
-    <h1 class="display-4">Add New Book</h1>
-
-    
-
+    <h3 class="display-4">Add new book</h3>
+    <hr />
     @if (ViewBag.IsSuccess == true)
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Add New Book Successfully!</strong>
-            <a asp-controller="Book" asp-action="GetBookDetailsById" asp-route-Id="@ViewBag.BookId" class="btn btn-sm btn-outline-secondary">View Details</a>
-
+            <strong>Congratulations</strong> You have added new book successfully. <br />
+            Click <a asp-controller="Book" asp-action="GetBookDetailsById" asp-route-id="@ViewBag.BookId">here</a> to view the details
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     }
 
-    <div class="d-flex justify-content-center">
+
+
+   @* <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status" id="myloader" style="display:none">
             <span class="visually-hidden">Loading...</span>
         </div>
-    </div>
+    data-ajax="true" data-ajax-complete="mycomplete" data-ajax-success="mysuccess"
+    data-ajax-failure="myfailure" data-ajax-loading="#myloader"
+    </div>*@
 
-    <form method="post" data-ajax="true" data-ajax-complete="mycomplete" data-ajax-success="mysuccess"
-          data-ajax-failure="myfailure" data-ajax-loading="#myloader"
+    <form method="post" enctype="multipart/form-data"
         asp-action="AddNewBook" asp-controller="Book">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
        
@@ -54,57 +54,86 @@
             <span asp-validation-for="Language" class="text-danger"></span>
         </div>*@
         <div class="form-group">
-            <label asp-for="LanguageId"></label>
+            <label asp-for="LanguageId"class="control-label"></label>
             <select asp-for="LanguageId" class="form-control" asp-items="ViewBag.Language">
                 <option value="">Please Choose Book Language </option>
-
             </select>
             <span asp-validation-for="LanguageId" class="text-danger"></span>
         </div>
         
 
         <div class="form-group">
-            <label asp-for="Name"></label>
+            <label asp-for="Name" class="control-label"></label>
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Title"></label>
+            <label asp-for="Title" class="control-label"></label>
             <input asp-for="Title" class="form-control" />
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Author"></label>
+            <label asp-for="Author" class="control-label"></label>
             <input asp-for="Author" class="form-control" />
             <span asp-validation-for="Author" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Price"></label>
+            <label asp-for="Price" class="control-label"></label>
             <input asp-for="Price" class="form-control" />
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Category"></label>
+            <label asp-for="Category" class="control-label"></label>
             <input asp-for="Category" class="form-control" />
             <span asp-validation-for="Category" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="TotalPage"></label>
+            <label asp-for="TotalPage" class="control-label"></label>
             <input asp-for="TotalPage" class="form-control" />
             <span asp-validation-for="TotalPage" class="text-danger"></span>
         </div>
         
         <div class="form-group">
-            <label asp-for="Description"></label>
+            <label asp-for="Description" class="control-label"></label>
             <textarea asp-for="Description" class="form-control">
             <span asp-validation-for="Description" class="text-danger"></span>
 
             </textarea>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CoverPhoto" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="CoverPhoto" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose Cover Photo</label>
+                <span asp-validation-for="CoverPhoto" class="text-danger"></span>
+            </div>
+            
+        </div>
+
+        <div class="form-group">
+            <label asp-for="BookPdf" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="BookPdf" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose pdf file</label>
+                <span asp-validation-for="BookPdf" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GalleryFiles" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="GalleryFiles" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose Images Gallery</label>
+                <span asp-validation-for="GalleryFiles" class="text-danger"></span>
+            </div>
+
         </div>
 
         <div class="form-group">
@@ -114,7 +143,7 @@
     </form>
 
 </div>
-@section scripts{
+@*@section scripts{
     <script>
         function mycomplete(data){
             alert("Completed");
@@ -126,4 +155,4 @@
             alert("Falied To Add Data")
         }
     </script>
-}
+}*@

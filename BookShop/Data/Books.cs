@@ -1,4 +1,7 @@
-﻿namespace BookShop.Data
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace BookShop.Data
 {
     public class Books
     {
@@ -12,8 +15,10 @@
         public int LanguageId { get; set; }
         public string Description { get; set; }
 
-
+        public string CoverImageUrl { get; set; }
         public Language Language { get; set; }
+        public ICollection<BookGallery> bookGallery { get; set; }
+        public string BookPdfUrl { get; set; }
 
 
     }

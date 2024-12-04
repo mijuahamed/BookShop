@@ -1,8 +1,12 @@
 ﻿using BookShop.Models;
 using BookShop.Repository;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,12 +17,15 @@ namespace BookShop.Controllers
     {
         public readonly BookRepository _bookRepository=null;
         public readonly LanguageRepository _languageRepository=null;
-        
-        public BookController(BookRepository bookRepository, LanguageRepository languageRepository)
+        public readonly IWebHostEnvironment _webHostEnvironment=null;
+
+        public BookController(BookRepository bookRepository, LanguageRepository languageRepository, IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
             _languageRepository = languageRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
+
         public async Task<ViewResult> GetAllBooks()
         {
             var data=await _bookRepository.GetAllBooks();
@@ -29,6 +36,30 @@ namespace BookShop.Controllers
             var data=await _bookRepository.GetBookById(id);
             return View(data);
         }
+
+        public async Task<IActionResult> DeleteBookById(int id)
+        {
+           await _bookRepository.DeleteBookById(id);
+            return RedirectToAction("GetAllBooks");
+        }
+        [HttpGet]
+        public async Task<ActionResult> UpdateBookById(int id)
+        {
+
+            var data = await _bookRepository.GetBookById(id);
+            return View(data);
+            //return RedirectToAction("GetBookDetailsById", new { id = id });
+        }
+
+        [HttpPost]
+        public  ActionResult UpdateBookById(BookModel book)
+        {
+            var data =  _bookRepository.UpdateBookById(book.Id, book);
+           // return View(data);
+            return RedirectToAction("GetBookDetailsById", new { id = book.Id });
+        }
+
+
         //public List<BookModel> SerachBook(string bookName, string authorName)
         //{
         //    return _bookRepository.SearchBook(bookName,authorName);
@@ -78,12 +109,46 @@ namespace BookShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (bookModel.CoverPhoto != null)
+                {
+                    string folder = "books/cover/";
+                    bookModel.CoverImageUrl= await UploadImage(folder, bookModel.CoverPhoto);
+
+
+
+                    //string folder = "books/cover/";
+                    //folder += Guid.NewGuid().ToString() + "_" + bookModel.CoverPhoto.FileName;
+                    //bookModel.CoverImageUrl="/"+folder;
+                    //string serverFolder=Path.Combine(_webHostEnvironment.WebRootPath, folder);
+                    //await bookModel.CoverPhoto.CopyToAsync(new FileStream(serverFolder, FileMode.Create)); ;
+                }
+                if (bookModel.BookPdf != null)
+                {
+                    string folder = "books/pdf/";
+                    bookModel.BookPdfUrl = await UploadImage(folder, bookModel.BookPdf);
+                }
+                if (bookModel.GalleryFiles != null)
+                {
+                    string folder = "books/gallery/";
+                    bookModel.Gallery = new List<GalleryModel>();
+                    foreach(var file in bookModel.GalleryFiles)
+                    {
+                        var gallery=new GalleryModel()
+                        {
+                            Name = file.Name,
+                            URL=await UploadImage(folder,file)
+                        };
+                        bookModel.Gallery.Add(gallery);
+                    }
+                    
+                }
+
+
                 int id = await _bookRepository.AddNewBook(bookModel);
                 if (id > 0)
                 {
                     return RedirectToAction(nameof(AddNewBook), new { isSuccess = true, bookId = id });
                 }
-
             }
             var languages = await _languageRepository.GetAllLanguage();
             ViewBag.Language = new SelectList(languages, "Id", "Name");
@@ -117,6 +182,15 @@ namespace BookShop.Controllers
 
             return View();
         }
+
+        public async Task<string> UploadImage(string folderPath,IFormFile file)
+        {
+            folderPath+=Guid.NewGuid().ToString()+ "_" + file.FileName;
+            string serverFolder=Path.Combine(_webHostEnvironment.WebRootPath, folderPath);
+            await file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+            return "/"+folderPath;
+        }
+
         //private List<LanguageModel> GetLanguage()
         //{
         //    var languages = new List<LanguageModel>()

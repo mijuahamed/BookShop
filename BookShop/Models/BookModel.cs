@@ -1,4 +1,5 @@
 ﻿using BookShop.Helpers;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,13 +25,25 @@ namespace BookShop.Models
         [Required(ErrorMessage = "Please enter a valid page number")]
         [Display(Name="Total Page of Book")]
         public int? TotalPage { get; set; }
-       // [Required(ErrorMessage = "Please choose your language")]
+        [Required(ErrorMessage = "Please choose your language")]
+        [Display(Name = "Select Language")]
         public int LanguageId { get; set; }
         public string LanguageName { get; set; }
         //[Required(ErrorMessage = "Please choose your language")]
         //public List<string> MultiLanguage { get; set; }
         public string Description { get; set; }
 
-        
+       // [Required(ErrorMessage = "Please choose the cover photo")]
+        [Display(Name = "Choose The Cover Photo OF Your Book")]
+        public IFormFile CoverPhoto { get; set; }
+        public string CoverImageUrl { get; set; }
+
+        public IFormFileCollection GalleryFiles { get; set; }
+        public List<GalleryModel> Gallery { get; set; }
+
+        public IFormFile BookPdf { get; set; }
+        public string BookPdfUrl { get; set; }
+
+
     }
 }

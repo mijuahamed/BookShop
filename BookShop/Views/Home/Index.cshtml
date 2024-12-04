@@ -19,23 +19,8 @@
 
 <div class="py-5 bg-light">
     <div class="container">
-       <div class="row">
-            @{
-                int count = 1;
-            }
-            @foreach (var book in Model)
-            {
-                if (count < 4) {
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <partial name="_bookThumbnail" model="@book" />
-                        </div>
-                    </div>
-                    count = count + 1;
-                }
-                else
-                    break;
-            }
-       </div>
+
+       @await Component.InvokeAsync("TopBooks",new{count=2})
+        
     </div>
 </div>

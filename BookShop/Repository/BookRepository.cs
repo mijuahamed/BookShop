@@ -69,6 +69,28 @@ namespace BookShop.Repository
             return books;
         }
 
+
+        public async Task<List<BookModel>> TopBooksAsync(int count)
+        {
+
+            var books = await _context.Books.Select(bookdata => new BookModel()
+            {
+                Author = bookdata.Author,
+                Name = bookdata.Name,
+                Description = bookdata.Description,
+                Id = bookdata.Id,
+                LanguageId = bookdata.LanguageId,
+                Price = bookdata.Price,
+                Title = bookdata.Title,
+                TotalPage = bookdata.TotalPage,
+                Category = bookdata.Category,
+                CoverImageUrl = bookdata.CoverImageUrl,
+
+            }).Take(count).ToListAsync();
+            return books;
+        }
+
+
         public async Task<BookModel> GetBookById(int id)
         {
             var data= await _context.Books.Where(book => book.Id == id).Select(bookdata => new BookModel()

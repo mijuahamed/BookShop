@@ -14,8 +14,9 @@ namespace BookShop.Controllers
 
         public async Task<ViewResult> Index()
         {
-            var data=await _bookRepository.GetAllBooks();
-            return View(data);
+           // var data=await _bookRepository.GetAllBooks();
+           // return View(data);
+           return View();
         }
         public ViewResult AboutUs()
         {

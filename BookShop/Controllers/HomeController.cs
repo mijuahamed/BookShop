@@ -6,8 +6,8 @@ namespace BookShop.Controllers
 {
     public class HomeController: Controller
     {
-        private readonly BookRepository _bookRepository;
-        public HomeController(BookRepository bookRepository)
+        private readonly IBookRepository _bookRepository;
+        public HomeController(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
         }

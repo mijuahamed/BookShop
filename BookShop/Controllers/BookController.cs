@@ -15,11 +15,11 @@ namespace BookShop.Controllers
 {
     public class BookController : Controller
     {
-        public readonly BookRepository _bookRepository=null;
-        public readonly LanguageRepository _languageRepository=null;
+        public readonly IBookRepository _bookRepository=null;
+        public readonly ILanguageRepository _languageRepository =null;
         public readonly IWebHostEnvironment _webHostEnvironment=null;
 
-        public BookController(BookRepository bookRepository, LanguageRepository languageRepository, IWebHostEnvironment webHostEnvironment)
+        public BookController(IBookRepository bookRepository, ILanguageRepository languageRepository, IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
             _languageRepository = languageRepository;
@@ -97,7 +97,7 @@ namespace BookShop.Controllers
             //};
 
             var languages =await _languageRepository.GetAllLanguage();
-            ViewBag.Language = new SelectList(languages, "Id", "Name");
+        //    ViewBag.Language = new SelectList(languages, "Id", "Name");
 
             ViewBag.IsSuccess = isSuccess;
             ViewBag.BookId = bookId;
@@ -151,7 +151,7 @@ namespace BookShop.Controllers
                 }
             }
             var languages = await _languageRepository.GetAllLanguage();
-            ViewBag.Language = new SelectList(languages, "Id", "Name");
+          //  ViewBag.Language = new SelectList(languages, "Id", "Name");
             //var group1 = new SelectListGroup() { Name = "Group1" };
             //var group2 = new SelectListGroup() { Name = "Group2", Disabled = true };
             //var group3 = new SelectListGroup() { Name = "Group3" };

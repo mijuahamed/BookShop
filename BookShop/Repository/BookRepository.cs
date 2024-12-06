@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookShop.Repository
 {
-    public class BookRepository
+    public class BookRepository : IBookRepository
     {
         private readonly BookShopContext _context = null;
         public BookRepository(BookShopContext context)
@@ -18,7 +18,7 @@ namespace BookShop.Repository
             _context = context;
         }
 
-        public async Task<int>  AddNewBook(BookModel bookModel)
+        public async Task<int> AddNewBook(BookModel bookModel)
         {
             var newbook = new Books()
             {
@@ -27,15 +27,15 @@ namespace BookShop.Repository
                 Category = bookModel.Category,
                 Description = bookModel.Description,
                 LanguageId = bookModel.LanguageId,
-                Price = bookModel.Price.HasValue? bookModel.Price.Value:0,
+                Price = bookModel.Price.HasValue ? bookModel.Price.Value : 0,
                 Title = bookModel.Title,
-                CoverImageUrl= bookModel.CoverImageUrl,
-                BookPdfUrl= bookModel.BookPdfUrl,
-                TotalPage = bookModel.TotalPage.HasValue? bookModel.TotalPage.Value : 0
+                CoverImageUrl = bookModel.CoverImageUrl,
+                BookPdfUrl = bookModel.BookPdfUrl,
+                TotalPage = bookModel.TotalPage.HasValue ? bookModel.TotalPage.Value : 0
 
             };
-            newbook.bookGallery=new List<BookGallery>();
-            foreach(var file in bookModel.Gallery)
+            newbook.bookGallery = new List<BookGallery>();
+            foreach (var file in bookModel.Gallery)
             {
                 BookGallery data = new BookGallery()
                 {
@@ -44,14 +44,14 @@ namespace BookShop.Repository
                 };
                 newbook.bookGallery.Add(data);
             }
-           await _context.Books.AddAsync(newbook);
-           await _context.SaveChangesAsync();
+            await _context.Books.AddAsync(newbook);
+            await _context.SaveChangesAsync();
             return newbook.Id;
         }
 
         public async Task<List<BookModel>> GetAllBooks()
         {
-           
+
             var books = await _context.Books.Select(bookdata => new BookModel()
             {
                 Author = bookdata.Author,
@@ -64,7 +64,7 @@ namespace BookShop.Repository
                 TotalPage = bookdata.TotalPage,
                 Category = bookdata.Category,
                 CoverImageUrl = bookdata.CoverImageUrl,
-                
+
             }).ToListAsync();
             return books;
         }
@@ -93,7 +93,7 @@ namespace BookShop.Repository
 
         public async Task<BookModel> GetBookById(int id)
         {
-            var data= await _context.Books.Where(book => book.Id == id).Select(bookdata => new BookModel()
+            var data = await _context.Books.Where(book => book.Id == id).Select(bookdata => new BookModel()
             {
                 Author = bookdata.Author,
                 Name = bookdata.Name,
@@ -105,55 +105,55 @@ namespace BookShop.Repository
                 TotalPage = bookdata.TotalPage,
                 Category = bookdata.Category,
                 LanguageName = bookdata.Language.Name,
-                CoverImageUrl= bookdata.CoverImageUrl,
-                Gallery=bookdata.bookGallery.Select(g => new GalleryModel()
+                CoverImageUrl = bookdata.CoverImageUrl,
+                Gallery = bookdata.bookGallery.Select(g => new GalleryModel()
                 {
                     Id = g.Id,
                     Name = g.Name,
                     URL = g.URL
                 }).ToList(),
-                BookPdfUrl= bookdata.BookPdfUrl,
+                BookPdfUrl = bookdata.BookPdfUrl,
             }).FirstOrDefaultAsync();
             return data;
-           // var languageData=await _context.Language.FindAsync(bookdata.LanguageId);
+            // var languageData=await _context.Language.FindAsync(bookdata.LanguageId);
         }
-       public async Task<bool> DeleteBookById(int id)
+        public async Task<bool> DeleteBookById(int id)
         {
-            var res=_context.Books.Where(x=>x.Id==id).FirstOrDefault();
+            var res = _context.Books.Where(x => x.Id == id).FirstOrDefault();
             if (res != null)
             {
                 _context.Books.Remove(res);
-               await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
-        public  bool UpdateBookById(int id,BookModel book)
+        public bool UpdateBookById(int id, BookModel book)
         {
-            
-            var old_book = _context.Books.FirstOrDefault(e => e.Id ==id);
+
+            var old_book = _context.Books.FirstOrDefault(e => e.Id == id);
             var updatebook = new Books()
             {
 
                 Name = book.Name,
                 Title = book.Title,
                 Author = book.Author,
-                Price=(int)book.Price,
-                TotalPage=(int)book.TotalPage,
+                Price = (int)book.Price,
+                TotalPage = (int)book.TotalPage,
                 Description = book.Description,
                 Category = old_book.Category,
-                CoverImageUrl= old_book.CoverImageUrl,
-                LanguageId=old_book.LanguageId,
-                Id=old_book.Id,
-                Language=old_book.Language,
-                BookPdfUrl= old_book.BookPdfUrl,
-                
+                CoverImageUrl = old_book.CoverImageUrl,
+                LanguageId = old_book.LanguageId,
+                Id = old_book.Id,
+                Language = old_book.Language,
+                BookPdfUrl = old_book.BookPdfUrl,
+
 
             };
             _context.Entry(old_book).CurrentValues.SetValues(updatebook);
             _context.SaveChanges();
             return true;
-           
+
         }
 
         //public List<BookModel> SearchBook(string name, string author)
@@ -176,6 +176,6 @@ namespace BookShop.Repository
         //};
         //}
     }
-    
-    
+
+
 }

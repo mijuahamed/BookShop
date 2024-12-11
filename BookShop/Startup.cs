@@ -1,4 +1,5 @@
 using BookShop.Data;
+using BookShop.Models;
 using BookShop.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,7 +37,7 @@ namespace BookShop
 
 
             services.AddDbContext<BookShopContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<BookShopContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BookShopContext>();
             services.AddControllersWithViews();
 #if DEBUG
             services.AddRazorPages().AddRazorRuntimeCompilation().AddViewOptions(options =>

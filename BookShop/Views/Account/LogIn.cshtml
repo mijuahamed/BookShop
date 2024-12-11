@@ -1,4 +1,4 @@
-﻿@model BookShop.Models.SignUpUserModel
+﻿@model BookShop.Models.SignInModel
 
 @{
     Layout = null;
@@ -9,8 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Signup</title>
-
+    <title>LogIn</title>
 
     <link href="~/css/site.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -28,48 +27,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 
-
-
 </head>
 <body>
 
 <hr />
 <div class="container">
-
-        <h4>Registrstiom Form</h4>
-        <hr/>
-        @if (ViewBag.IsSuccess == true)
-        {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Congratulations</strong> Sign Up Successfully. <br />
-            </div>
-        }
-    <div class="row">
+        <h4>Sign In Form</h4>
+        <div class="row">
             <div class="col-md-4">
-                <form asp-action="Signup">
+                <form asp-action="LogIn">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <div class="form-group">
-                        <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control" />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label asp-for="PhoneNumber" class="control-label"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-
-                   
-                   
                     <div class="form-group">
                         <label asp-for="Email" class="control-label"></label>
                         <input asp-for="Email" class="form-control" />
@@ -80,51 +47,27 @@
                         <input asp-for="Password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="ConfirmPasswrod" class="control-label"></label>
-                        <input asp-for="ConfirmPasswrod" class="form-control" />
-                        <span asp-validation-for="ConfirmPasswrod" class="text-danger"></span>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                        </label>
                     </div>
-
-
-                        <div class="form-group">
-                            <label asp-for="Gender" class="lable-control"></label>
-                    <select name="Gender" class="custom-select">
-                                <option value="">Choose Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                            <span asp-validation-for="Gender" class="text-danger"></span>
-                        </div>
-                   
-
-
-
                     <div class="form-group">
-                        <label asp-for="DateofBirth" class="lable-control"></label>
-                        <input asp-for="DateofBirth" class="form-control" />
-                        <span asp-validation-for="DateofBirth" class="text-danger"></span>
-                    </div>
-
-
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
-                    </div>
-                    <div>
-                        <a asp-action="Login">Login</a>
+                        <input type="submit" value="Log In" class="btn btn-primary" />
                     </div>
                 </form>
             </div>
             <div class="col-md-8">
-                <img src="~/images/signup.jpg"class="img-fluid" />
+                <img src="~/images/login.png" class="img-fluid"/>
             </div>
-    </div>
-        
+        </div>
+        <div>
+            
+            <a asp-action="Signup">Sign Up</a>
+        </div>
+
 </div>
 
-@*<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
     <footer class="text-center text-lg-start text-dark"
             style="background-color: #ECEFF1">
         <!-- Section: Social media -->
@@ -242,5 +185,6 @@
         </div>
         <!-- Copyright -->
     </footer>
+
 </body>
 </html>

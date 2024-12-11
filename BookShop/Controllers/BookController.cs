@@ -45,7 +45,6 @@ namespace BookShop.Controllers
         [HttpGet]
         public async Task<ActionResult> UpdateBookById(int id)
         {
-
             var data = await _bookRepository.GetBookById(id);
             return View(data);
             //return RedirectToAction("GetBookDetailsById", new { id = id });

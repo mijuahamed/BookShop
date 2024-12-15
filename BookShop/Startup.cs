@@ -1,6 +1,8 @@
 using BookShop.Data;
+using BookShop.Helpers;
 using BookShop.Models;
 using BookShop.Repository;
+using BookShop.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -38,7 +40,12 @@ namespace BookShop
 
             services.AddDbContext<BookShopContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BookShopContext>();
+
             services.AddControllersWithViews();
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = _configuration["path:login"];
+            });
 #if DEBUG
             services.AddRazorPages().AddRazorRuntimeCompilation().AddViewOptions(options =>
             {
@@ -48,6 +55,9 @@ namespace BookShop
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ILanguageRepository, LanguageRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +78,7 @@ namespace BookShop
             app.UseRouting();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

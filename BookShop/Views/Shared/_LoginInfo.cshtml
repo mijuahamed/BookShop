@@ -7,6 +7,7 @@
             Hello @(User.FindFirst("UserFirstName").Value + " " + User.FindFirst("UserLastName").Value)
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account">Change Password</a>
             <a class="dropdown-item" asp-action="Logout" asp-controller="Account">Logout</a>
         </div>
     </li>

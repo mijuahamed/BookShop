@@ -40,6 +40,18 @@ namespace BookShop
 
             services.AddDbContext<BookShopContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BookShopContext>();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+
+
+                options.SignIn.RequireConfirmedEmail = true;
+            });
 
             services.AddControllersWithViews();
             services.ConfigureApplicationCookie(config =>
@@ -56,7 +68,10 @@ namespace BookShop
             services.AddScoped<ILanguageRepository, LanguageRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmailService, EmailService>();
 
+
+            services.Configure<SMTPConfigModel>(_configuration.GetSection("SMTPConfig"));
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
         }
 

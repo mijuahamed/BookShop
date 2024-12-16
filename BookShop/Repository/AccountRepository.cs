@@ -1,4 +1,5 @@
 ﻿using BookShop.Models;
+using BookShop.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Threading.Tasks;
@@ -9,10 +10,14 @@ namespace BookShop.Repository
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public AccountRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly IUserService _userService;
+        public AccountRepository(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _userService = userService;
         }
 
         public async Task<IdentityResult> CreateUderAsync(SignUpUserModel userModel)
@@ -42,6 +47,14 @@ namespace BookShop.Repository
         public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordModel changePasswordModel)
+        {
+            var userId = _userService.GetUserId();
+            var user =await _userManager.FindByIdAsync(userId);
+
+            return await _userManager.ChangePasswordAsync(user, changePasswordModel.CurrentPassword, changePasswordModel.NewPassword);
         }
 
     }

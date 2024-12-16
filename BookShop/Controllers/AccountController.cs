@@ -1,6 +1,7 @@
 ﻿using BookShop.Models;
 using BookShop.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Routing;
 using System.Threading.Tasks;
 
@@ -72,11 +73,15 @@ namespace BookShop.Controllers
 
                     return RedirectToAction("Index", "Home");   
                 }
+                if(result.IsNotAllowed)
+                {
+                    ModelState.AddModelError("", "Not Allowed");
+                }
                 else
                 {
                     ModelState.AddModelError("", "Invalid Credentials");
                 }
-
+                
             }
 
             return View(signInModel);
@@ -87,6 +92,31 @@ namespace BookShop.Controllers
         {
            await _accountRepository.SignOutAsync();
            return RedirectToAction("Index", "Home");
+        }
+        [Route("change-password")]
+        public  IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Route("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel changePasswordModel)
+        {
+            if (ModelState.IsValid)
+            {
+               var result=await _accountRepository.ChangePasswordAsync(changePasswordModel);
+                if (result.Succeeded)
+                {
+                    ViewBag.IsSuccess = true;
+                }
+                foreach (var errorMessage in result.Errors)
+                {
+                    ModelState.AddModelError("", errorMessage.Description);
+                }
+
+
+            }
+            return View(changePasswordModel);
         }
     }
 }

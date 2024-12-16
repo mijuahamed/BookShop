@@ -30,7 +30,7 @@ namespace BookShop.Models
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Please enter password")]
-        [Display(Name = "Confirm Password")]
+        [Display(Name = "Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required(ErrorMessage = "Please enter confirm password")]

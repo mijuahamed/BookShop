@@ -1,6 +1,8 @@
-﻿using BookShop.Repository;
+﻿using BookShop.Models;
+using BookShop.Repository;
 using BookShop.Service;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BookShop.Controllers
@@ -9,16 +11,24 @@ namespace BookShop.Controllers
     {
         private readonly IBookRepository _bookRepository;
         private readonly IUserService _userService;
-        public HomeController(IBookRepository bookRepository,IUserService userService)
+        private readonly IEmailService _emailService;
+        public HomeController(IBookRepository bookRepository,IUserService userService, IEmailService emailService)
         {
             _bookRepository = bookRepository;
             _userService = userService;
+            _emailService = emailService;
         }
 
         public async Task<ViewResult> Index()
         {
-            var id=_userService.GetUserId();
-            var isLoggedIn=_userService.IsAuthenticated();
+            UserEmailOptions options = new UserEmailOptions
+            {
+                ToEmails = new List<string>() { "test@gmail.com" }
+            };
+            await _emailService.SendTestEmail(options);
+
+          //  var id=_userService.GetUserId();
+            //var isLoggedIn=_userService.IsAuthenticated();
            // var data=await _bookRepository.GetAllBooks();
            // return View(data);
            return View();
